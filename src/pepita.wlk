@@ -1,4 +1,5 @@
-import ciudades.*
+
+ import ciudades.*
 
 object pepita {
 	var property energia = 100
