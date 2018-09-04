@@ -1,21 +1,39 @@
 import pepita.*
 
-
 object roque {
 	var comidaGuardada = null
-	var property position = game.origin()
+	var property position = game.origin()	
 	
-	method comidaGuardada() = comidaGuardada
-	method imagen() = "roque.png"
+	method imagen() = "jugador.png"
 	
-	method guardarComida(comida){
-		comidaGuardada = comida
-		game.removeVisual(comida)
-		comida.generarPosicionAleatoria()
+	method encontroAlgo(algo){
+		if(algo.esComida()){
+			self.guardarComida(algo)
+		}
 	}
+
+	method guardarComida(comida){
+	//Roque guarda la comida definida por el parametro, y suelta la anterior (si hubiese) una celda a la 
+	//izquierda de donde está.
+	
+		game.removeVisual(comida)
+		if(comidaGuardada != null){
+			game.addVisualIn(comidaGuardada, position.left(1))
+		}
+		comidaGuardada = comida				
+	}
+	
 	method alimentar(ave){
-		if(self.comidaGuardada() != null){
-		ave.come(self.comidaGuardada())			
+	//Roque alimenta al ave definida por el parámetro con la comida que tiene guardada (si hubiese).
+	
+		if(comidaGuardada != null){
+		ave.come(comidaGuardada)
+		comidaGuardada = null	
 		}
 	}	
-}
+	
+	method interactuar(ave){
+	//Si roque colisiona con pepita, se llama a este método que invoca al método de alimentar.
+		self.alimentar(ave)
+	}
+}	
