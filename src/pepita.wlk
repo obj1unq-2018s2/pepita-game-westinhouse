@@ -3,7 +3,7 @@
  import comidas.*
 
 object pepita {
-	var property energia = 100
+	var property energia = 10
 	var property ciudad = null
 	var property posicion = game.at(3,3)
 	var property imagen = "pepita1.png" //Uso esta variable para poder cambiar la imagen donde señala el metodo imagen()
@@ -13,7 +13,7 @@ object pepita {
 	method come(comida) {
 		energia += comida.energia()
 		comida.fueComida()
-		self.estaGorda()
+		self.condicionFisica()
 	}
 	
 	method volaHacia(unaCiudad) {
@@ -30,7 +30,7 @@ object pepita {
 		if(self.tieneEnergiaSuficiente(nuevaPosicion)){
 			energia -= self.energiaParaVolar(posicion.distance(nuevaPosicion))
 			self.posicion(nuevaPosicion)
-			self.estaFlaca()
+			self.condicionFisica()
 		}
 		else{ game.say(self,"Dame de comer primero!")}
 	}
@@ -51,27 +51,24 @@ object pepita {
 	
 	//CAMBIOS FISICOS DE PEPITA
 	
-	method estaGorda(){
+	method condicionFisica(){
 	/*
-	 * Pregunta si la energia de pepita es mayor que 100. Si lo es, cambia la imagen de pepita por una
-	 * acorde. Si no lo es, evalúa si está flaca, y si no lo está, se vuelve a la imagen inicial.
+	 * Pregunta si pepita esta gorda. Si lo esta, cambia la imagen de pepita por una acorde.
+	 * Caso contrario, evalúa si está flaca y cambia la imagen por la correspondiente en ese caso.
+	 * Si no se da ninguno de estos casos significa que pepita esta en una condicion fisica idonea
+	 * y se coloca la imagen por defecto.
 	 */
-		if(self.energia() > 100){
+		if(self.estaGorda()){
 			imagen = "pepita-gorda-raw.png"
 		}
-		else{
-			self.estaFlaca()
-			imagen = "pepita1.png"
-			
-		}
+		else if(self.estaFlaca()){
+			imagen = "pepita.png"	
+			}
+			else{ imagen = "pepita1.png" }
 	}
-	method estaFlaca(){
-		if(self.energia() < 10){
-			imagen = "pepita.png"
-		}
-	}
+	method estaFlaca() = return energia < 10 
 	
+	method estaGorda() = return energia > 100 
 	
-		
 	
 }
